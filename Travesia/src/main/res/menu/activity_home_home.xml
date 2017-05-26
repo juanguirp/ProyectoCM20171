@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_account"
+            android:title="Perfil" />
+        <item
+            android:id="@+id/nav_group"
+            android:icon="@drawable/ic_menu_group"
+            android:title="Grupos" />
+        <item
+            android:id="@+id/nav_crossing"
+            android:icon="@drawable/ic_menu_bike"
+            android:title="Crear travesía" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Tools" />
+    </group>
+
+    <item android:title="Otras opciones">
+        <menu>
+            <item
+                android:id="@+id/nav_signout"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Cerrar sesión" />
+
+        </menu>
+    </item>
+
+</menu>

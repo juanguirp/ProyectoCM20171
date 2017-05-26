@@ -1,0 +1,125 @@
+<ScrollView
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        tools:context="co.edu.udea.compumovil.gr04_20171.proyectocm20171.events.AddEventFragment">
+
+        <ImageView
+            android:id="@+id/event_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/image_add"
+            android:clickable="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/addImage"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_event_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_event_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nameEvent"
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_event_person_in_charge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_event_person_in_charge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/personInCharge"
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_event_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_event_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/dateEvent"
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_event_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_event_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/locationEvent"
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_event_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_event_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/descriptionEvent"
+                android:inputType="textPersonName"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/addEventButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/guardar"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+</ScrollView>

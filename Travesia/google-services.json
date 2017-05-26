@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "805157846352",
+    "firebase_url": "https://travesia-162415.firebaseio.com",
+    "project_id": "travesia-162415",
+    "storage_bucket": "travesia-162415.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805157846352:android:d347c72ce9ac5f40",
+        "android_client_info": {
+          "package_name": "co.edu.udea.compumovil.gr04_20171.proyectocm20171"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805157846352-nflhn9ctrm581ido12to1hg5psisvh7s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQdVaZQjZP0Vp0cJAk_iwlzJfcOYbbJL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

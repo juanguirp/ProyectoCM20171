@@ -1,0 +1,82 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/friends_cycle"
+    tools:context="co.edu.udea.compumovil.gr04_20171.proyectocm20171.group.CreateGroupFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_groupName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin_fields"
+            android:layout_margin="20dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_groupName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/groupName"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_cyclistname"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/til_groupName"
+            android:layout_marginLeft="20dp"
+            >
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_cyclistname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/cyclistname"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.CheckableImageButton
+            android:id="@+id/img_click_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/til_cyclistname"
+            android:layout_below="@+id/til_groupName"
+            android:background="@drawable/ic_search"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_cyclist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/til_cyclistname"
+            android:scrollbars="vertical">
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_create_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:tint="@android:color/white"
+        android:src="@drawable/check"
+        app:fabSize="normal"
+         />
+
+</android.support.design.widget.CoordinatorLayout>
