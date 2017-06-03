@@ -1,23 +1,27 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <!--<item name="android:textColor">@color/colorText</item>-->
     </style>
 
     <style name="CardViewStyle" parent="Theme.AppCompat.Light">
-        <item name="cardCornerRadius">2dp</item>
-        <item name="cardElevation">2dp</item>
+        <item name="cardCornerRadius">40dp</item>
+        <item name="cardElevation">12dp</item>
+        <item name="android:innerRadius">0dp</item>
+        <item name="android:shape">ring</item>
+        <item name="android:thicknessRatio">1.9</item>
         <item name="contentPaddingBottom">14dp</item>
         <item name="contentPaddingTop">5dp</item>
-        <item name="contentPaddingLeft">28dp</item>
-        <item name="contentPaddingRight">24dp</item>
-        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
+        <item name="android:paddingLeft">12dp</item>
+
     </style>
 
 

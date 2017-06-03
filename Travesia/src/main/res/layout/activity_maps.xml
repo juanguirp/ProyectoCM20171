@@ -18,33 +18,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/map"
-        android:layout_marginTop="48dp">
+        android:layout_marginTop="20dp">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_latitude"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_weight="1"
+                android:id="@+id/tv_start"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="50dp"
                 android:gravity="center_horizontal"
-                android:text="New Text"
+                android:background="@drawable/ic_menu_bike"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tools:text="20.3" />
+                 />
 
             <TextView
-                android:id="@+id/tv_longitude"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_weight="1"
+                android:id="@+id/tv_notification"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="120dp"
                 android:gravity="center_horizontal"
-                android:text="New Text"
+                android:background="@drawable/alert"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tools:text="45.2" />
+                 />
         </TableRow>
 
         <TableRow
@@ -52,33 +50,24 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_latitude_label"
+                android:id="@+id/tv_start_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="@string/latitude_label"
+                android:text="@string/iniciar"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
             <TextView
-                android:id="@+id/tv_longitude_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_weight="1"
+                android:id="@+id/tv_notification_label"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:gravity="center_horizontal"
-                android:text="@string/longitude_label"
+                android:text="@string/notificar_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
         </TableRow>
     </TableLayout>
-    <Button
-        android:id="@+id/btn_travesía"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/coordinates"
-        android:text="@string/btn_create"
-        android:layout_marginLeft="140dp"
-        />
+
 </RelativeLayout>

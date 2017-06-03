@@ -42,4 +42,8 @@
     <string name="descriptionEvent">Descripción</string>
     <string name="guardar">Guardar</string>
     <string name="remove">Remover</string>
+    <string name="inicio">Inicio</string>
+    <string name="btn_start">Iniciar</string>
+    <string name="iniciar">Iniciar</string>
+    <string name="notificar_label">Notificar</string>
 </resources>

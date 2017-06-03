@@ -15,7 +15,7 @@ public class Cyclist {
     private String phonenumber;
     private String city;
     private String age;
-    private Map<String, Boolean> user = new HashMap<String, Boolean>();
+    private String user ;
     private Map<String, Boolean> groups = new HashMap<String, Boolean>();
 
     public Cyclist() {
@@ -61,14 +61,12 @@ public class Cyclist {
     }
 
 
-    public Map getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(Object userObject) {
-        if(userObject instanceof Map){
-            this.user.putAll((Map<String, Boolean>) userObject);
-        }
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public Map getGroups() {

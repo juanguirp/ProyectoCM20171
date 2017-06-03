@@ -1,19 +1,19 @@
 package co.edu.udea.compumovil.gr04_20171.proyectocm20171.map;
 
 import android.Manifest;
-import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,13 +43,21 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import co.edu.udea.compumovil.gr04_20171.proyectocm20171.R;
 
-import static android.widget.Toast.LENGTH_LONG;
+import static android.content.Context.LOCATION_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,8 +70,8 @@ import static android.widget.Toast.LENGTH_LONG;
 public class MapsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM_FRAGMENT = "fragment";
+    private static final String ARG_PARAM_GROUPKEY = "groupKey";
     private static final int REQUEST_CHECK_SETTINGS = 12;
 
     private GoogleMap mMap;
@@ -77,12 +85,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     DrawInMap drawInMap;
     boolean mRequestingLocationUpdates;
 
-    private TextView tvLongitude = null;
-    private TextView tvLatitude = null;
+    private TextView tvStart = null;
+    private TextView tvNotification = null;
+
+    private TextView tvMsgStart = null;
+
+    private DatabaseReference mDatabase;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mPreviusFragment = null;
+    private String mGroupKey = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -102,8 +114,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     public static MapsFragment newInstance(String param1, String param2) {
         MapsFragment fragment = new MapsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM_FRAGMENT, param1);
+        args.putString(ARG_PARAM_GROUPKEY, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -112,8 +124,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mPreviusFragment = getArguments().getString(ARG_PARAM_FRAGMENT);
+            if(mPreviusFragment == "group"){
+                mGroupKey = getArguments().getString(ARG_PARAM_GROUPKEY);
+            }
         }
     }
 
@@ -121,6 +135,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_maps, container, false);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -134,8 +150,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
                     .build();
         }
 
-        tvLongitude = (TextView) root.findViewById(R.id.tv_longitude);
-        tvLatitude = (TextView) root.findViewById(R.id.tv_latitude);
+        enableGPS(getActivity());
+        tvStart = (TextView) root.findViewById(R.id.tv_start);
+        tvNotification = (TextView) root.findViewById(R.id.tv_notification);
+        tvMsgStart = (TextView) root.findViewById(R.id.tv_start_label);
 
         //Location Request
         createLocationRequest();
@@ -146,6 +164,26 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         PendingResult<LocationSettingsResult> result =
                 LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
                         builder.build());
+
+        tvStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvMsgStart.setText("En progreso...");
+            }
+        });
+
+        tvNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LatLng myPotition = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(myPotition).title("Barado").icon(BitmapDescriptorFactory.fromResource(R.drawable.alert)));
+                CameraPosition cameraPosition = CameraPosition.builder()
+                        .target(myPotition)
+                        .zoom(15)
+                        .build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
 
         result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
@@ -191,13 +229,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         // Sets the map type to be "hybrid"
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         // Add a marker in Sydney and move the camera
-        LatLng medellin = new LatLng(6.217, -75.567);
-        mMap.addMarker(new MarkerOptions().position(medellin).title("Marcador en Medellín"));
-        CameraPosition cameraPosition = CameraPosition.builder()
-                .target(medellin)
-                .zoom(15)
-                .build();
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setCompassEnabled(true);
@@ -295,19 +327,71 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
             //                                          int[] grantResults)
             return;
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if(mPreviusFragment == "personal"){
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                mCurrentLocation = mLastLocation;
+                LatLng myPotition = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(myPotition).title("Mi posición"));
+                CameraPosition cameraPosition = CameraPosition.builder()
+                        .target(myPotition)
+                        .zoom(15)
+                        .build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        }else if(mPreviusFragment == "group"){
 
-        if (mLastLocation != null) {
-            mCurrentLocation = mLastLocation;
-            Log.d("latitude current location", String.valueOf(mCurrentLocation.getLatitude()));
-            Log.d("longitude current location", String.valueOf(mCurrentLocation.getLongitude()));
-            tvLatitude.setText(String.valueOf(mLastLocation.getLatitude()));
-            tvLongitude.setText(String.valueOf(mLastLocation.getLongitude()));
+            ValueEventListener grouptListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Map<String, Object> mapGroup = (Map<String, Object>) dataSnapshot.getValue();
+                    Log.e("nombre", (String) mapGroup.get("name"));
+                     //Toast.makeText(getActivity(), (CharSequence) mapGroup.get("name"),Toast.LENGTH_LONG).show();
+                    Map<String, Boolean> members = (Map<String, Boolean>) mapGroup.get("members");
+                    for (String member : members.keySet()){
+                        Log.e("miembro", member);
+                        ValueEventListener cyclistListener = new ValueEventListener(){
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Map<String, Object> mapCyclist = (Map<String, Object>) dataSnapshot.getValue();
+                                Map<String ,String> location = (Map<String, String>) mapCyclist.get("location");
+                                double latitude = 0;
+                                double longitude = 0;
+                                latitude = Double.parseDouble(location.get("latitude"));
+                                longitude = Double.parseDouble(location.get("longitude"));
+                                Log.e("latitude", String.valueOf(latitude));
+                                LatLng memberPotition = new LatLng(latitude,longitude);
+                                mMap.addMarker(new MarkerOptions().position(memberPotition).title("Ciclista"));
+                                CameraPosition cameraPosition = CameraPosition.builder()
+                                        .target(memberPotition)
+                                        .zoom(15)
+                                        .build();
+                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+                        mDatabase.child("cyclist").child(member).addValueEventListener(cyclistListener);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            mDatabase.child("group").child(mGroupKey).addValueEventListener(grouptListener);
         }
 
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
-        }
+
+
+        //if (mRequestingLocationUpdates) {
+        //    startLocationUpdates();
+        //}
     }
 
     @Override
@@ -346,14 +430,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
         Log.d("Longitude location update", String.valueOf(mCurrentLocation.getLongitude()));
 
         //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateUI();
+        //updateUI();
     }
 
 
-    private void updateUI() {
+    /*private void updateUI() {
         tvLatitude.setText(String.valueOf(mCurrentLocation.getLatitude()));
         tvLongitude.setText(String.valueOf(mCurrentLocation.getLongitude()));
-    }
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this
@@ -377,11 +461,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onPause() {
         super.onPause();
-        stopLocationUpdates();
+       // stopLocationUpdates();
     }
 
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
+    }
+
+    public void enableGPS(FragmentActivity activity){
+        LocationManager service = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
+        boolean enabled = service
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!enabled) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
+
     }
 }

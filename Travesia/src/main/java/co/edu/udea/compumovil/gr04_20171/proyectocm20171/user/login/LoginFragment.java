@@ -93,7 +93,7 @@ public class LoginFragment extends Fragment {
         //session = new Session(getActivity());
         // Referencias UI
 
-        mHomeButton = (Button) root.findViewById(R.id.homeButton);
+        //mHomeButton = (Button) root.findViewById(R.id.homeButton);
         mLoginButton = (Button) root.findViewById(R.id.loginButton);
         mRegister = (TextView) root.findViewById(R.id.registerButton);
         mMailField = (TextInputEditText) root.findViewById(R.id.et_emailLogin);
@@ -144,14 +144,6 @@ public class LoginFragment extends Fragment {
             }
         };
 
-        mHomeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),HomeActivity.class));
-                getActivity().finish();
-            }
-        });
-
         return root;
     }
 
@@ -182,12 +174,12 @@ public class LoginFragment extends Fragment {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
+
                         if (isLogin){
                             onLoginSuccess();
                         }else {
                             onLoginFailed();
                         }
-                        progressDialog.dismiss();
                     }
                 }, 3000);
 
@@ -238,14 +230,17 @@ public class LoginFragment extends Fragment {
     private void showAppointmentsScreen() {
         Intent intent = new Intent(getActivity(), HomeActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
     public void onLoginFailed() {
+//        progressDialog.dismiss();
         // Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
         mLoginButton.setEnabled(true);
     }
 
     public void onLoginSuccess() {
+        progressDialog.dismiss();
         mLoginButton.setEnabled(true);
         getActivity().finish();
     }
@@ -265,6 +260,7 @@ public class LoginFragment extends Fragment {
         }
         return valid;
     }
+
 
 
     /**

@@ -13,7 +13,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import co.edu.udea.compumovil.gr04_20171.proyectocm20171.R;
-import co.edu.udea.compumovil.gr04_20171.proyectocm20171.events.EventListAdapter;
 
 /**
  * Created by jonnatan on 25/05/17.
@@ -59,7 +58,7 @@ public class CyclistListAdapter extends RecyclerView.Adapter<CyclistListAdapter.
     }
 
     public static class CyclistViewHolder extends RecyclerView.ViewHolder {
-        TextView username;
+        TextView user;
         //TextView eventDescription;
         //ImageView eventImage;
         //ImageButton eventLocation;
@@ -68,7 +67,7 @@ public class CyclistListAdapter extends RecyclerView.Adapter<CyclistListAdapter.
 
         CyclistViewHolder(View itemView) {
             super(itemView);
-            username = (TextView) itemView.findViewById(R.id.tv_username);
+            user = (TextView) itemView.findViewById(R.id.tv_user);
             //eventDescription = (TextView) itemView.findViewById(R.id.event_description);
             //eventImage = (ImageButton) itemView.findViewById(R.id.event_location);
             //eventInformation = (ImageButton) itemView.findViewById(R.id.event_information);
@@ -78,8 +77,8 @@ public class CyclistListAdapter extends RecyclerView.Adapter<CyclistListAdapter.
 
     @Override
     public void onBindViewHolder(CyclistViewHolder holder, int position) {
-        Log.e("username in recycler", cyclists.get(position).getUsername());
-        holder.username.setText(cyclists.get(position).getUsername());
+        Log.e("user in recycler", cyclists.get(position).getUser());
+        holder.user.setText(cyclists.get(position).getUser());
     }
 
 

@@ -120,7 +120,8 @@ public class AddEditUserActivity extends AppCompatActivity {
         linkLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showScreenLogin();
+                finish();
+                //showScreenLogin();
             }
         });
 
@@ -197,7 +198,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         String keyEmail = email.split("@")[0];
         user.put(keyEmail,true);
         cyclist.setUsername(username);
-        cyclist.setUser(user);
+        cyclist.setUser(keyEmail);
 
         //Cifrar cifrar = new Cifrar();
         //password = cifrar.cifrar(password);
@@ -228,8 +229,8 @@ public class AddEditUserActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
+
 
     private String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
